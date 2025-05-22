@@ -1,0 +1,53 @@
+import { PrismaClient } from '../generated/prisma/index.js';
+const prisma = new PrismaClient();
+import { v4 as uuidv4 } from 'uuid';
+
+
+
+
+export const findAllTipoServicos = async () => {
+    return await prisma.tipoServico.findMany();
+};
+
+export const findTipoServicoById = async (id) => {
+    return await prisma.tipoServico.findUnique({
+        where: { id: Number(id)  },
+    });
+};
+
+
+export const createTipoServico = async (data) => {
+    const { nome, descricao, custoEstimado, ativo } = data;
+    const novoTipoServico = await prisma.tipoServico.create({
+        data: {
+            id: uuidv4(),
+            nome,
+            descricao: descricao || null,
+            custoEstimado: custoEstimado !== undefined ? parseFloat(custoEstimado) : null,
+            ativo: typeof ativo === 'boolean' ? ativo : true,
+        },
+    });
+    return novoTipoServico;
+};
+
+
+export const updateTipoServico = async (id, data) => {
+    const { nome, descricao, custoEstimado, ativo } = data;
+    const tipoServicoAtualizado = await prisma.tipoServico.update({
+        where: { id: Number(id)  },
+        data: {
+            nome: nome || undefined,
+            descricao: descricao !== undefined ? descricao : undefined,
+            custoEstimado: custoEstimado !== undefined ? parseFloat(custoEstimado) : undefined,
+            ativo: typeof ativo === 'boolean' ? ativo : undefined,
+        },
+    });
+    return tipoServicoAtualizado;
+};
+
+
+export const deleteTipoServico = async (id) => {
+    await prisma.tipoServico.delete({
+        where: { id },
+    });
+};

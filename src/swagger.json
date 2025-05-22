@@ -1,0 +1,422 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "title": "API Projeto Final",
+    "version": "1.0.0",
+    "description": "Esta API é dedicada ao gerenciamento de informações sobre pessoas desaparecidas. Ela permite que os usuários registrem novas ocorrências de desaparecimento, visualizem os casos cadastrados, adicionem contatos relevantes para cada caso e registrem avistamentos que possam auxiliar na localização das pessoas desaparecidas. O objetivo principal é centralizar e facilitar o acesso a dados cruciais para investigações e buscas."
+  },
+  "servers": [
+    {
+      "url": "http://localhost:3000",
+      "description": "Servidor local"
+    }
+  ],
+  "paths": {
+    "/pessoas": {
+      "get": {
+        "summary": "Listar todas as pessoas",
+        "responses": {
+          "200": { "description": "Lista de pessoas" }
+        }
+      }
+    },
+    "/pessoas/cadastrar": {
+  "post": {
+    "summary": "Cadastrar uma nova pessoa",
+    "requestBody": {
+      "required": true,
+      "content": {
+        "application/json": {
+          "schema": {
+            "type": "object",
+            "properties": {
+              "nome": { "type": "string" },
+              "idade": { "type": "integer" },
+              "dataDesaparecimento": { "type": "string", "format": "date-time" },
+              "descricao": { "type": "string" },
+              "status": { "type": "string", "enum": ["ATIVO", "INATIVO"] }
+            },
+            "required": ["nome", "idade", "dataDesaparecimento", "descricao", "status"]
+          }
+        }
+      }
+    },
+    "responses": {
+      "201": { "description": "Pessoa cadastrada" }
+    }
+  }
+},
+    "/pessoas/deletar/{id}": {
+      "delete": {
+        "summary": "Deletar pessoa",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": { "type": "integer" }
+          }
+        ],
+        "responses": {
+          "200": { "description": "Pessoa deletada" }
+        }
+      }
+    },
+    "/pessoas/atualizar/{id}": {
+      "patch": {
+        "summary": "Atualizar pessoa",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": { "type": "integer" }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "nome": { "type": "string" },
+                  "idade": { "type": "integer" },
+                  "email": { "type": "string" }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": { "description": "Pessoa atualizada" }
+        }
+      }
+    },
+    "/avistamento": {
+      "get": {
+        "summary": "Listar todos os avistamentos",
+        "responses": {
+          "200": { "description": "Lista de avistamentos" }
+        }
+      }
+    },
+    "/avistamento/cadastrar": {
+      "post": {
+        "summary": "Cadastrar avistamento",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "idPessoaDesaparecida": { "type": "integer" },
+                  "comentario": { "type": "string" },
+                  "localAvistamento": { "type": "string" },
+                  "latitude": { "type": "number" },
+                  "longitude": { "type": "number" },
+                  "nomeInformante": { "type": "string" },
+                  "contatoInformante": { "type": "string" }
+                },
+                "required": ["idPessoaDesaparecida", "comentario"]
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": { "description": "Avistamento cadastrado" }
+        }
+      }
+    },
+    "/avistamento/deletar/{id}": {
+      "delete": {
+        "summary": "Deletar avistamento",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": { "type": "integer" }
+          }
+        ],
+        "responses": {
+          "200": { "description": "Avistamento deletado" }
+        }
+      }
+    },
+    "/avistamento/atualizar/{id}": {
+      "patch": {
+        "summary": "Atualizar avistamento",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": { "type": "integer" }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "comentario": { "type": "string" },
+                  "localAvistamento": { "type": "string" },
+                  "latitude": { "type": "number" },
+                  "longitude": { "type": "number" },
+                  "nomeInformante": { "type": "string" },
+                  "contatoInformante": { "type": "string" }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": { "description": "Avistamento atualizado" }
+        }
+      }
+    },
+    "/contato/listarContatos": {
+      "get": {
+        "summary": "Listar todos os contatos",
+        "responses": {
+          "200": { "description": "Lista de contatos" }
+        }
+      }
+    },
+    "/contato/criarContato": {
+      "post": {
+        "summary": "Criar contato",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "nome": { "type": "string" },
+                  "email": { "type": "string" },
+                  "telefone": { "type": "string" },
+                  "mensagem": { "type": "string" }
+                },
+                "required": ["nome", "email", "mensagem"]
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": { "description": "Contato criado" }
+        }
+      }
+    },
+    "/contato/buscarContatoPorId/{id}": {
+      "get": {
+        "summary": "Buscar contato por ID",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": { "type": "string" }
+          }
+        ],
+        "responses": {
+          "200": { "description": "Contato encontrado" }
+        }
+      }
+    },
+    "/contato/atualizarContato/{id}": {
+      "put": {
+        "summary": "Atualizar contato",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": { "type": "string" }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "nome": { "type": "string" },
+                  "email": { "type": "string" },
+                  "telefone": { "type": "string" },
+                  "mensagem": { "type": "string" }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": { "description": "Contato atualizado" }
+        }
+      }
+    },
+    "/contato/deletarContato/{id}": {
+      "delete": {
+        "summary": "Deletar contato",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": { "type": "string" }
+          }
+        ],
+        "responses": {
+          "200": { "description": "Contato deletado" }
+        }
+      }
+    },
+    "/localizacao": {
+      "get": {
+        "summary": "Listar todas as localizações",
+        "responses": {
+          "200": { "description": "Lista de localizações" }
+        }
+      }
+    },
+    "/localizacao/LocalizacaoById{id}": {
+      "get": {
+        "summary": "Buscar localização por ID",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": { "type": "string" }
+          }
+        ],
+        "responses": {
+          "200": { "description": "Localização encontrada" }
+        }
+      }
+    },
+    "/localizacao/createLocalizacao": {
+      "post": {
+        "summary": "Criar localização",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "latitude": { "type": "number" },
+                  "longitude": { "type": "number" },
+                  "pessoaId": { "type": "string" }
+                },
+                "required": ["latitude", "longitude", "pessoaId"]
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": { "description": "Localização criada" }
+        }
+      }
+    },
+    "/localizacao/updateLocalizacao{id}": {
+      "put": {
+        "summary": "Atualizar localização",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": { "type": "string" }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "latitude": { "type": "number" },
+                  "longitude": { "type": "number" }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": { "description": "Localização atualizada" }
+        }
+      }
+    },
+    "/localizacao/deleteLocalizacao{id}": {
+      "delete": {
+        "summary": "Deletar localização",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": { "type": "string" }
+          }
+        ],
+        "responses": {
+          "200": { "description": "Localização deletada" }
+        }
+      }
+    },
+    "/user/registrar": {
+    "post": {
+        "summary": "Registrar usuário",
+        "requestBody": {
+        "required": true,
+        "content": {
+            "application/json": {
+            "schema": {
+                "type": "object",
+                "properties": {
+                "nome": { "type": "string" },
+                "email": { "type": "string" },
+                "senha": { "type": "string" },
+                "tipo_usuario": { "type": "string" }
+                },
+                "required": ["nome", "email", "senha", "tipo_usuario"]
+            }
+            }
+        }
+        },
+        "responses": {
+        "201": { "description": "Usuário registrado" }
+        }
+    }
+    },
+    "/user/login": {
+    "post": {
+        "summary": "Login de usuário",
+        "requestBody": {
+        "required": true,
+        "content": {
+            "application/json": {
+            "schema": {
+                "type": "object",
+                "properties": {
+                "email": { "type": "string" },
+                "senha": { "type": "string" }
+                },
+                "required": ["email", "senha"]
+            }
+            }
+        }
+        },
+        "responses": {
+        "200": { "description": "Login realizado" }
+        }
+    }
+    }
+}
+}

@@ -1,0 +1,18 @@
+import { Router } from "express";
+import {
+    getAllTipoServicos,
+    getTipoServicoById,
+    createTipoServico,
+    updateTipoServico,
+    deleteTipoServico
+} from "../controller/tipoServico.controller.js";
+
+const router = Router();
+
+router.get("/", getAllTipoServicos);
+router.get("/:id", getTipoServicoById);
+router.post("/", createTipoServico);
+router.put("/:id", updateTipoServico);
+router.delete("/:id", deleteTipoServico);
+
+export default router;
